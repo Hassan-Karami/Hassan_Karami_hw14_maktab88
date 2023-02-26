@@ -3,6 +3,8 @@ const router = express.Router();
 const crud = require("../crud");
 const path = require("path");
 const dbAddress = path.join(__dirname, "../DB/products-data.json");
+
+
 router.get("/product/get-all-products", (req, res) => {
   let productsList = require("../DB/products-data.json");
   res.status(200).send(productsList);
@@ -13,7 +15,8 @@ router.get("/product/get-product/:id", (req, res) => {
   let targetProduct = productsList.find(
     (product) => product.id == req.params.id
   );
-  res.status(200).send(targetProduct);
+  if(!targetProduct) res.status(404).send("Product Not Found!!")
+  else res.status(200).send(targetProduct);
 });
 
 router.post("/product/create-product/:id", (req, res) => {
