@@ -5,7 +5,7 @@ const path = require("path");
 const dbAddress = path.join(__dirname, "../DB/products-data.json");
 router.get("/product/get-all-products", (req, res) => {
   let productsList = require("../DB/products-data.json");
-  res.status(200).send(productsList.length);
+  res.status(200).send(productsList);
 });
 
 router.get("/product/get-product/:id", (req, res) => {
