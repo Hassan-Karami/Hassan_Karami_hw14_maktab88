@@ -10,7 +10,7 @@
   },
   {
     "id": 2,
-    "title": "iPhone X",
+    "title": "Bokhari Barghi",
     "price": 899,
     "rating": 4.44,
     "stock": 34,
@@ -235,38 +235,11 @@
   },
   {
     "id": 27,
-    "title": "Flying Wooden Bird",
+    "title": "Hassan",
     "price": 51,
     "rating": 4.41,
     "stock": 17,
     "brand": "Flying Wooden",
-    "category": "home-decoration"
-  },
-  {
-    "id": 28,
-    "title": "3D Embellishment Art Lamp",
-    "price": 20,
-    "rating": 4.82,
-    "stock": 54,
-    "brand": "LED Lights",
-    "category": "home-decoration"
-  },
-  {
-    "id": 29,
-    "title": "Handcraft Chinese style",
-    "price": 60,
-    "rating": 4.44,
-    "stock": 7,
-    "brand": "luxury palace",
-    "category": "home-decoration"
-  },
-  {
-    "id": 30,
-    "title": "Key Holder",
-    "price": 30,
-    "rating": 4.92,
-    "stock": 54,
-    "brand": "Golden",
     "category": "home-decoration"
   }
 ]
