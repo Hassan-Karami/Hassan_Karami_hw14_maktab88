@@ -5,14 +5,13 @@ const path = require("path")
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-
+// app.get("/product-page",(req,res)=>{
+//     res.sendFile(path.join(__dirname,"./public/product.html"));
+// })
 app.use("/",productRouter);
-app.get("/",(req,res)=>{
+app.get("/product-page",(req,res)=>{
     res.status(200).sendFile(path.join(__dirname,"./views/index.html"));
 })
-
-
-
 
 
 app.listen(4000, ()=>{

@@ -3,6 +3,7 @@ const fs = require("node:fs/promises");
 const path = require("path");
 
 const itemsTemplate = [
+  "id",
   "title",
   "price",
   "rating",
@@ -12,10 +13,11 @@ const itemsTemplate = [
 ];
 
 /****************CREATE****************/
-const create = async (id, databaseAddress, newObject) => {
+const create = async (databaseAddress, newObject) => {
   try {
     let dataList = await fs.readFile(databaseAddress, "utf-8");
     dataList = await JSON.parse(dataList);
+    let id = newObject.id;
     //id validation
     if (typeof id !== "number") throw new Error("id must be a Number");
     // validation for all create
@@ -50,8 +52,8 @@ const create = async (id, databaseAddress, newObject) => {
       throw new Error("price,stock and rating dataType must be 'Number'");
     //End of Validations
 
-    dataList.push({ id, ...newObject });
-    await fs.writeFile(address, JSON.stringify(dataList));
+    dataList.push(newObject);
+    await fs.writeFile(databaseAddress, JSON.stringify(dataList));
     return true;
   } catch (err) {
     console.log(err);
