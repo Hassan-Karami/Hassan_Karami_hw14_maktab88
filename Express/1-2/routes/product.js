@@ -27,6 +27,7 @@ router.post("/product/create-product", (req, res) => {
     else res.status(201).send("Product Created Successfully");
   };
   main();
+  
 });
 
 //Updata A Product With PUT
@@ -48,6 +49,7 @@ router.patch("/product/update-product/:id", (req, res) => {
       else res.status(201).send("Product Updated Successfully");
     };
     main();
+    
 });
 
 //Remove a Product by ID
@@ -58,6 +60,7 @@ router.delete("/product/remove-product/:id", (req, res) => {
       else res.status(201).send("Product Removed Successfully");
     };
     main();
+    
 });
 
 module.exports = router;

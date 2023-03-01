@@ -27,7 +27,7 @@ const create = async (databaseAddress, newObject) => {
       throw new Error("!!! only objects are allowed");
     if (keys.length === 0) throw new Error("!!! Empty objects are not allowed");
     let duplicate = dataList.find(
-      (data) => data.id.toString() === id.toString()
+      (data) => data.id === id
     );
     if (duplicate)
       throw new Error("This 'id' existing now!!, Try another one.");

@@ -1,8 +1,7 @@
 
 $(document).ready(function () {
-  
-  const main = async ()=>{
-    let users = await fetch("http://localhost:4000/product/get-all-products");
+  (async () => {
+    let users =await fetch("http://localhost:4000/product/get-all-products");
     users = await users.json();
     const tableBody = $("#tableBody");
     const tableHeadID = $("#tableHeadID");
@@ -39,19 +38,19 @@ $(document).ready(function () {
         fieldname: "price",
         fieldId: "editModal-priceInput",
         label: "Price *",
-        type: "text",
+        type: "number",
       },
       {
         fieldname: "rating",
         fieldId: "editModal-ratingInput",
         label: "Rating *",
-        type: "text",
+        type: "number",
       },
       {
         fieldname: "stock",
         fieldId: "editModal-stockInput",
         label: "Stock *",
-        type: "text",
+        type: "number",
       },
       {
         fieldname: "brand",
@@ -77,31 +76,55 @@ $(document).ready(function () {
     }
 
     creationModalSubmitButton.on("click", () => {
+    
       const newUser = {
         id: idCounter,
         title: creationModalTitleInput.val().trim(),
-        price: creationModalPriceInput.val().trim(),
-        rating: creationModalRatingInput.val().trim(),
-        stock: creationModalStockInput.val().trim(),
+        price: +creationModalPriceInput.val().trim(),
+        rating: +creationModalRatingInput.val().trim(),
+        stock: +creationModalStockInput.val().trim(),
         brand: creationModalBrandInput.val().trim(),
         category: creationModalCategoryInput.val().trim(),
       };
-      if (!newUser.title || !newUser.price || !newUser.rating || !newUser.stock || !newUser.brand || !newUser.category ) {
+      if (
+        !newUser.title ||
+        !newUser.price ||
+        !newUser.rating ||
+        !newUser.stock ||
+        !newUser.brand ||
+        !newUser.category
+      ) {
         alert("Invalid inputs");
         return null;
       }
+      
+       fetch("http://localhost:4000/product/create-product", {
+        method: "POST",
+        body: JSON.stringify(newUser),
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      }).then(res=>{
+        if(res.status === 201){
 
-      idCounter += 1;
-      users.push(newUser);
-      creationModal.modal("hide");
-      creationModalTitleInput.val("");
-      creationModalPriceInput.val("");
-      creationModalRatingInput.val("");
-      creationModalStockInput.val("");
-      creationModalBrandInput.val("");
-      creationModalCategoryInput.val("");
+          idCounter += 1;
+          users.push(newUser);
+          creationModal.modal("hide");
+          creationModalTitleInput.val("");
+          creationModalPriceInput.val("");
+          creationModalRatingInput.val("");
+          creationModalStockInput.val("");
+          creationModalBrandInput.val("");
+          creationModalCategoryInput.val("");
+          tableBodyRenderer();
 
-      tableBodyRenderer();
+        }
+        
+
+        
+      }).catch(err=>console.log("Hassan Error"+err));
+       
+
+      
+
     });
 
     const inputGenerator = (id, label, value, type) => {
@@ -142,12 +165,29 @@ $(document).ready(function () {
     };
 
     updateBtn.on("click", function () {
+
       let newUserInformation = { id: selectedId };
       for (const field of editFields) {
         let value = $(`#${field.fieldId}`).val();
         newUserInformation[field.fieldname] = value;
       }
 
+       fetch(`http://localhost:4000/product/update-product/${selectedId}`, {
+         method: "PUT",
+         body: JSON.stringify(newUserInformation),
+         headers: { "Content-type": "application/json; charset=UTF-8" },
+       })
+         .then((res) => {
+           if (res.status === 201) {
+            window.location.reload();
+            
+         
+      }})
+         .catch((err) => console.log("Hassan Error" + err));
+       
+
+      
+      
       users = users.map((el) => {
         if (el.id === selectedId) {
           return newUserInformation;
@@ -167,7 +207,19 @@ $(document).ready(function () {
     });
 
     removeBtn.on("click", function () {
-      users = users.filter((el) => el.id !== selectedId);
+      console.log(selectedId);
+      // users = users.filter((el) => el.id !== selectedId);
+      fetch(`http://localhost:4000/product/remove-product/${selectedId}`, {
+        method: "DELETE",
+        
+        // headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
+        .then((res) => {
+          if (res.status === 201) {
+            window.location.reload();
+          }
+        })
+        .catch((err) => console.log("Hassan Error" + err));
       tableBodyRenderer();
     });
 
@@ -214,15 +266,15 @@ $(document).ready(function () {
         users.sort((a, b) => a.id - b.id);
         tableBodyRenderer();
       });
-      tableHeadFname.on("click", function () {
+      tableHeadTitle.on("click", function () {
         users.sort((a, b) => a.first_name.localeCompare(b.first_name));
         tableBodyRenderer();
       });
-      tableHeadLName.on("click", function () {
+      tableHeadPrice.on("click", function () {
         users.sort((a, b) => a.last_name.localeCompare(b.last_name));
         tableBodyRenderer();
       });
-      tableHeadEmail.on("click", function () {
+      tableHeadRating.on("click", function () {
         users.sort((a, b) => a.email.localeCompare(b.email));
         tableBodyRenderer();
       });
@@ -230,7 +282,5 @@ $(document).ready(function () {
 
     tableBodyRenderer();
     sortEvents();
-  }
-  main();
- 
+  })();
 });
