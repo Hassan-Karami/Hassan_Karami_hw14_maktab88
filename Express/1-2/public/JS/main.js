@@ -1,5 +1,6 @@
 
 $(document).ready(function () {
+  
   (async () => {
     let users =await fetch("http://localhost:4000/product/get-all-products");
     users = await users.json();
@@ -75,7 +76,7 @@ $(document).ready(function () {
       return max + 1;
     }
 
-    creationModalSubmitButton.on("click", () => {
+    creationModalSubmitButton.on("click",async () => {
     
       const newUser = {
         id: idCounter,
@@ -98,7 +99,7 @@ $(document).ready(function () {
         return null;
       }
       
-       fetch("http://localhost:4000/product/create-product", {
+      await fetch("http://localhost:4000/product/create-product", {
         method: "POST",
         body: JSON.stringify(newUser),
         headers: { "Content-type": "application/json; charset=UTF-8" },
@@ -164,7 +165,7 @@ $(document).ready(function () {
       `;
     };
 
-    updateBtn.on("click", function () {
+    updateBtn.on("click", async ()=> {
 
       let newUserInformation = { id: selectedId };
       for (const field of editFields) {
@@ -172,7 +173,7 @@ $(document).ready(function () {
         newUserInformation[field.fieldname] = value;
       }
 
-       fetch(`http://localhost:4000/product/update-product/${selectedId}`, {
+      await fetch(`http://localhost:4000/product/update-product/${selectedId}`, {
          method: "PUT",
          body: JSON.stringify(newUserInformation),
          headers: { "Content-type": "application/json; charset=UTF-8" },
@@ -206,15 +207,14 @@ $(document).ready(function () {
       editModeBodyGenerator(targetUser);
     });
 
-    removeBtn.on("click", function () {
-      console.log(selectedId);
+    removeBtn.on("click",async ()=> {
+      
       // users = users.filter((el) => el.id !== selectedId);
-      fetch(`http://localhost:4000/product/remove-product/${selectedId}`, {
+      return fetch(`http://localhost:4000/product/remove-product/${selectedId}`, {
         method: "DELETE",
         
         // headers: { "Content-type": "application/json; charset=UTF-8" },
-      })
-        .then((res) => {
+      }).then((res) => {
           if (res.status === 201) {
             window.location.reload();
           }
