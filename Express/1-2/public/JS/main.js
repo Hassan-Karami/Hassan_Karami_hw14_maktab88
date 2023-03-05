@@ -1,8 +1,6 @@
-
 $(document).ready(function () {
-  
   (async () => {
-    let users =await fetch("http://localhost:4000/product/get-all-products");
+    let users = await fetch("http://localhost:4000/product/get-all-products");
     users = await users.json();
     const tableBody = $("#tableBody");
     const tableHeadID = $("#tableHeadID");
@@ -76,8 +74,7 @@ $(document).ready(function () {
       return max + 1;
     }
 
-    creationModalSubmitButton.on("click",async () => {
-    
+    creationModalSubmitButton.on("click", async () => {
       const newUser = {
         id: idCounter,
         title: creationModalTitleInput.val().trim(),
@@ -98,34 +95,27 @@ $(document).ready(function () {
         alert("Invalid inputs");
         return null;
       }
-      
+
       await fetch("http://localhost:4000/product/create-product", {
         method: "POST",
         body: JSON.stringify(newUser),
         headers: { "Content-type": "application/json; charset=UTF-8" },
-      }).then(res=>{
-        if(res.status === 201){
-
-          idCounter += 1;
-          users.push(newUser);
-          creationModal.modal("hide");
-          creationModalTitleInput.val("");
-          creationModalPriceInput.val("");
-          creationModalRatingInput.val("");
-          creationModalStockInput.val("");
-          creationModalBrandInput.val("");
-          creationModalCategoryInput.val("");
-          tableBodyRenderer();
-
-        }
-        
-
-        
-      }).catch(err=>console.log("Hassan Error"+err));
-       
-
-      
-
+      })
+        .then((res) => {
+          if (res.status === 201) {
+            idCounter += 1;
+            users.push(newUser);
+            creationModal.modal("hide");
+            creationModalTitleInput.val("");
+            creationModalPriceInput.val("");
+            creationModalRatingInput.val("");
+            creationModalStockInput.val("");
+            creationModalBrandInput.val("");
+            creationModalCategoryInput.val("");
+            tableBodyRenderer();
+          }
+        })
+        .catch((err) => console.log("Hassan Error" + err));
     });
 
     const inputGenerator = (id, label, value, type) => {
@@ -165,30 +155,22 @@ $(document).ready(function () {
       `;
     };
 
-    updateBtn.on("click", async ()=> {
-
+    updateBtn.on("click", async () => {
       let newUserInformation = { id: selectedId };
       for (const field of editFields) {
         let value = $(`#${field.fieldId}`).val();
         newUserInformation[field.fieldname] = value;
       }
 
-      await fetch(`http://localhost:4000/product/update-product/${selectedId}`, {
-         method: "PUT",
-         body: JSON.stringify(newUserInformation),
-         headers: { "Content-type": "application/json; charset=UTF-8" },
-       })
-         .then((res) => {
-           if (res.status === 201) {
-            window.location.reload();
-            
-         
-      }})
-         .catch((err) => console.log("Hassan Error" + err));
-       
+      await fetch(
+        `http://localhost:4000/product/update-product/${selectedId}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(newUserInformation),
+          headers: { "Content-type": "application/json; charset=UTF-8" },
+        }
+      );
 
-      
-      
       users = users.map((el) => {
         if (el.id === selectedId) {
           return newUserInformation;
@@ -207,20 +189,19 @@ $(document).ready(function () {
       editModeBodyGenerator(targetUser);
     });
 
-    removeBtn.on("click",async ()=> {
-      
-      // users = users.filter((el) => el.id !== selectedId);
-      return fetch(`http://localhost:4000/product/remove-product/${selectedId}`, {
-        method: "DELETE",
+    removeBtn.on("click", async () => {
+      let response= await fetch(
+        `http://localhost:4000/product/remove-product/${selectedId}`,
+        {
+          method: "DELETE",
+        }
+      )
+      // if(response.status===201){
+      //   console.log("heoollo");
+      // // await fetch("http://localhost:4000/product-page");
         
-        // headers: { "Content-type": "application/json; charset=UTF-8" },
-      }).then((res) => {
-          if (res.status === 201) {
-            window.location.reload();
-          }
-        })
-        .catch((err) => console.log("Hassan Error" + err));
-      tableBodyRenderer();
+      // }
+      
     });
 
     this.handleOnClickTableRow = (id) => {
@@ -284,3 +265,22 @@ $(document).ready(function () {
     sortEvents();
   })();
 });
+
+function reloadP() {
+  return new Promise((res, rej) => {
+    location.reload(true);
+    res();
+  });
+}
+
+// Define a promisified version of the reload.location method
+function reloadLocationAsync() {
+  return new Promise((resolve, reject) => {
+    try {
+      window.location.reload();
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
+}

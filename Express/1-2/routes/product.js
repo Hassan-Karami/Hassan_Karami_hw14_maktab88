@@ -46,7 +46,7 @@ router.patch("/product/update-product/:id", (req, res) => {
     const main = async () => {
       let accepted = await crud.update(+req.params.id, dbAddress, req.body);
       if (!accepted) res.status(500).send("failed to add data to database");
-      else res.status(201).send("Product Updated Successfully");
+      else res.status(201).sendFile(path.join(__dirname,"../views/index.html"))
     };
     main();
     
@@ -57,7 +57,7 @@ router.delete("/product/remove-product/:id", (req, res) => {
     const main = async () => {
       let accepted = await crud.remove(+req.params.id, dbAddress, req.body);
       if (!accepted) res.status(500).send("failed process...");
-      else res.status(201).send("Product Removed Successfully");
+      else res.status(201).sendFile(path.join(__dirname,"../views/index.html"));
     };
     main();
     
