@@ -8,6 +8,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
-app.use("/auth", signupRoter)
+app.use("/", signupRoter)
  
 app.listen(4000);

@@ -59,11 +59,6 @@ submitButton.addEventListener("click",async()=>{
       
       }, 1000);
     }
-  
-
-    
-    
-
   } catch (err) {
     console.log(err);
     
