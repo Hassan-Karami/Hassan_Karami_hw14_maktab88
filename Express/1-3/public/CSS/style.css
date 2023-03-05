@@ -67,3 +67,10 @@ button{
     box-shadow: 5px 5px 5px;
 
 }
+.p-info{
+    font-size: 36px;
+
+}
+#user-info{
+    display: none;
+}

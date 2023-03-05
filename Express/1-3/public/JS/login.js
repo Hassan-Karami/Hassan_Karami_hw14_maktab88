@@ -3,6 +3,12 @@ const passwordInput = document.getElementById("passwordInput");
 const loginButton = document.getElementById("login-btn");
 const messageBody = document.getElementById("messageBody");
 const messageText = document.getElementById("messageText");
+const formParent = document.getElementById("form-parent");
+const userInfo = document.getElementById("user-info");
+const firstNameInfo = document.getElementById("fname-info");
+const lastNameInfo = document.getElementById("lname-info");
+const userNameInfo = document.getElementById("username-info");
+const genderInfo = document.getElementById("gender-info");
 
 
 loginButton.addEventListener("click",async()=>{
@@ -34,7 +40,24 @@ loginButton.addEventListener("click",async()=>{
         }
         messageText.innerHTML=`Welcome ${res.firstname } ${res.lastname}`
         messageBody.className="message-body-success";
+        formParent.style.display="none";
+
+        firstNameInfo.innerText += " "+ res.firstname;
+
+        lastNameInfo.innerText += " " + res.lastname;
+
+
+        genderInfo.innerText += " " + res.gender;
+
+        userNameInfo.innerText += " " + res.username;
+
+        userInfo.style.display="block";
+
+
+
+
         
+
     } catch (err) {
         console.log(err);
         
