@@ -1,19 +1,13 @@
 const express = require("express");
 const app = express();
-const productRouter = require("./routes/product.js");
-const path = require("path")
-app.use(express.static("public"));
+const path = require("path");
+const signupRoter = require("./routes/signupRouts")
+
+
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 
-app.use("/",productRouter);
-app.get("/admin/get-all-users",(req,res)=>{
-    res.status(200).sendFile(path.join(__dirname,"./views/index.html"));
-})
-
-
-app.listen(4000, ()=>{
-    console.log("Server Is Listening On Port 4000...");
-})
-
-
+app.use(express.static("public"));
+app.use("/", signupRoter)
+ 
+app.listen(4000);
